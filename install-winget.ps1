@@ -34,4 +34,4 @@ try {
     Write-output "`nWinget is not installed. Try to install from MS Store instead`n"
 }
 
-#winget upgrade --all -h --accept-package-agreements --accept-source-agreements
+winget upgrade --all -h --accept-package-agreements --accept-source-agreements
