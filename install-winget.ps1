@@ -1,3 +1,26 @@
+
+function Get-WingetCmd {
+    #Get WinGet Location in User context
+    $WingetCmd = Get-Command winget.exe -ErrorAction SilentlyContinue
+    if ($WingetCmd){
+        $Script:winget = $WingetCmd.Source
+    }
+    #Get WinGet Location in System context (WinGet < 1.17)
+    elseif (Test-Path "C:\Program Files\WindowsApps\Microsoft.DesktopAppInstaller_*_x64__8wekyb3d8bbwe\AppInstallerCLI.exe"){
+        $Script:winget = Resolve-Path "C:\Program Files\WindowsApps\Microsoft.DesktopAppInstaller_*_x64__8wekyb3d8bbwe\AppInstallerCLI.exe" | Select-Object -ExpandProperty Path
+    }
+    #Get WinGet Location in System context (WinGet > 1.17)
+    elseif (Test-Path "C:\Program Files\WindowsApps\Microsoft.DesktopAppInstaller_*_x64__8wekyb3d8bbwe\winget.exe"){
+        $Script:winget = Resolve-Path "C:\Program Files\WindowsApps\Microsoft.DesktopAppInstaller_*_x64__8wekyb3d8bbwe\winget.exe" | Select-Object -ExpandProperty Path
+    }
+    else{
+        break
+    }
+}
+
+#Get WinGet Location Function
+Get-WingetCmd
+
 # Download latest release from github
 $Repo = "https://api.github.com/repos/microsoft/winget-cli/releases/latest"
 
